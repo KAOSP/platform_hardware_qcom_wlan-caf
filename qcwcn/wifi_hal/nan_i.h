@@ -963,7 +963,6 @@ typedef struct PACKED
     u32 amHopCountExpireCount;
     u32 ndpChannelFreq;
     u32 ndpChannelFreq2;
-    u32 schedUpdateChannelFreq;
 } FwNanSyncStats, *pFwNanSyncStats;
 
 /* NAN Misc DE Statistics */

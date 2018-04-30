@@ -143,11 +143,7 @@ wifi_error NanCommand::putNanEnable(transaction_id id, const NanEnableRequest *p
         (
           pReq->config_subscribe_sid_beacon ? (SIZEOF_TLV_HDR + \
           sizeof(pReq->subscribe_sid_beacon_val)) : 0 \
-        ) + \
-        (
-           pReq->config_discovery_beacon_int ? (SIZEOF_TLV_HDR + \
-           sizeof(u32)) : 0 \
-        );
+        ) ;
     pNanEnableReqMsg pFwReq = (pNanEnableReqMsg)malloc(message_len);
     if (pFwReq == NULL) {
         cleanup();
@@ -308,10 +304,6 @@ wifi_error NanCommand::putNanEnable(transaction_id id, const NanEnableRequest *p
                       sizeof(pReq->subscribe_sid_beacon_val),
                       (const u8*)&pReq->subscribe_sid_beacon_val, tlvs);
     }
-    if (pReq->config_discovery_beacon_int) {
-        tlvs = addTlv(NAN_TLV_TYPE_DB_INTERVAL, sizeof(u32),
-                      (const u8*)&pReq->discovery_beacon_interval, tlvs);
-    }
 
     mVendorData = (char*)pFwReq;
     mDataLen = message_len;
@@ -434,10 +426,6 @@ wifi_error NanCommand::putNanConfig(transaction_id id, const NanConfigRequest *p
         (
            /* Always include cfg discovery indication TLV */
            SIZEOF_TLV_HDR + sizeof(u32) \
-        ) + \
-        (
-           pReq->config_discovery_beacon_int ? (SIZEOF_TLV_HDR + \
-           sizeof(u32)) : 0 \
         );
 
     if (pReq->num_config_discovery_attr) {
@@ -557,10 +545,6 @@ wifi_error NanCommand::putNanConfig(transaction_id id, const NanConfigRequest *p
         tlvs = addTlv(NAN_TLV_TYPE_SUBSCRIBE_SID_BEACON,
                       sizeof(pReq->subscribe_sid_beacon_val),
                       (const u8*)&pReq->subscribe_sid_beacon_val, tlvs);
-    }
-    if (pReq->config_discovery_beacon_int) {
-        tlvs = addTlv(NAN_TLV_TYPE_DB_INTERVAL, sizeof(u32),
-                      (const u8*)&pReq->discovery_beacon_interval, tlvs);
     }
 
     u32 config_discovery_indications;

@@ -601,8 +601,7 @@ wifi_error NanCommand::putNanPublish(transaction_id id, const NanPublishRequest 
         (SIZEOF_TLV_HDR + sizeof(NanServiceAcceptPolicy)) +
         (pReq->cipher_type ? SIZEOF_TLV_HDR + sizeof(NanCsidType) : 0) +
         ((pReq->sdea_params.config_nan_data_path || pReq->sdea_params.security_cfg ||
-          pReq->sdea_params.ranging_state || pReq->sdea_params.range_report ||
-          pReq->sdea_params.qos_cfg) ?
+          pReq->sdea_params.ranging_state || pReq->sdea_params.range_report) ?
           SIZEOF_TLV_HDR + sizeof(NanFWSdeaCtrlParams) : 0) +
         ((pReq->ranging_cfg.ranging_interval_msec || pReq->ranging_cfg.config_ranging_indications ||
           pReq->ranging_cfg.distance_ingress_cm || pReq->ranging_cfg.distance_egress_cm) ?
@@ -709,8 +708,7 @@ wifi_error NanCommand::putNanPublish(transaction_id id, const NanPublishRequest 
     if (pReq->sdea_params.config_nan_data_path ||
         pReq->sdea_params.security_cfg ||
         pReq->sdea_params.ranging_state ||
-        pReq->sdea_params.range_report ||
-        pReq->sdea_params.qos_cfg) {
+        pReq->sdea_params.range_report) {
         NanFWSdeaCtrlParams pNanFWSdeaCtrlParams;
         memset(&pNanFWSdeaCtrlParams, 0, sizeof(NanFWSdeaCtrlParams));
 
@@ -733,9 +731,6 @@ wifi_error NanCommand::putNanPublish(transaction_id id, const NanPublishRequest 
         if (pReq->sdea_params.range_report) {
             pNanFWSdeaCtrlParams.range_report =
                 (((pReq->sdea_params.range_report & NAN_ENABLE_RANGE_REPORT) >> 1) ? 1 : 0);
-        }
-        if (pReq->sdea_params.qos_cfg) {
-            pNanFWSdeaCtrlParams.qos_required = pReq->sdea_params.qos_cfg;
         }
         tlvs = addTlv(NAN_TLV_TYPE_SDEA_CTRL_PARAMS, sizeof(NanFWSdeaCtrlParams),
                         (const u8*)&pNanFWSdeaCtrlParams, tlvs);
@@ -858,8 +853,7 @@ wifi_error NanCommand::putNanSubscribe(transaction_id id,
         (pReq->tx_match_filter_len ? SIZEOF_TLV_HDR + pReq->tx_match_filter_len : 0) +
         (pReq->cipher_type ? SIZEOF_TLV_HDR + sizeof(NanCsidType) : 0) +
         ((pReq->sdea_params.config_nan_data_path || pReq->sdea_params.security_cfg ||
-          pReq->sdea_params.ranging_state || pReq->sdea_params.range_report ||
-          pReq->sdea_params.qos_cfg) ?
+          pReq->sdea_params.ranging_state || pReq->sdea_params.range_report) ?
           SIZEOF_TLV_HDR + sizeof(NanFWSdeaCtrlParams) : 0) +
         ((pReq->ranging_cfg.ranging_interval_msec || pReq->ranging_cfg.config_ranging_indications ||
           pReq->ranging_cfg.distance_ingress_cm || pReq->ranging_cfg.distance_egress_cm) ?
@@ -974,8 +968,7 @@ wifi_error NanCommand::putNanSubscribe(transaction_id id,
     if (pReq->sdea_params.config_nan_data_path ||
         pReq->sdea_params.security_cfg ||
         pReq->sdea_params.ranging_state ||
-        pReq->sdea_params.range_report ||
-        pReq->sdea_params.qos_cfg) {
+        pReq->sdea_params.range_report) {
         NanFWSdeaCtrlParams pNanFWSdeaCtrlParams;
         memset(&pNanFWSdeaCtrlParams, 0, sizeof(NanFWSdeaCtrlParams));
 
@@ -998,9 +991,6 @@ wifi_error NanCommand::putNanSubscribe(transaction_id id,
         if (pReq->sdea_params.range_report) {
             pNanFWSdeaCtrlParams.range_report =
                 ((pReq->sdea_params.range_report & NAN_ENABLE_RANGE_REPORT >> 1) ? 1 : 0);
-        }
-        if (pReq->sdea_params.qos_cfg) {
-            pNanFWSdeaCtrlParams.qos_required = pReq->sdea_params.qos_cfg;
         }
         tlvs = addTlv(NAN_TLV_TYPE_SDEA_CTRL_PARAMS, sizeof(NanFWSdeaCtrlParams),
                         (const u8*)&pNanFWSdeaCtrlParams, tlvs);

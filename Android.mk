@@ -1,5 +1,5 @@
-#ifeq ($(call my-dir),$(call project-path-for,wlan))
+ifeq ($(TARGET_QCOM_WLAN_VARIANT),caf)
 
 include $(call all-subdir-makefiles)
 
-#endif
+endif
